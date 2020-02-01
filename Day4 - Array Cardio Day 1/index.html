@@ -94,13 +94,13 @@
             'Black Walnut', 'Birthday Cake', 'Mexican Chocolate', 'Mocha Almond Fudge', 'Raspberry'
         ];
 
-        const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry',
+        let people = ['Beck, Glenn', 'Aerry, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry',
             'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert',
             'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester',
             'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano',
             'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle',
             'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose',
-            'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black Elk', 'Blair, Robert',
+            'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert',
             'Blair, Tony', 'Blake, William'
         ];
 
@@ -111,12 +111,12 @@
         // Array.prototype.filter()
         // 1. Filter the list of inventors for those who were born in the 1500's
 
-        // let ans = inventors.filter(function(inventor) {
+        // let fifteen = inventors.filter(function(inventor) {
         //     return inventor.year >= 1500 && inventor.year < 1600
         // })
 
-        // let ans = inventors.filter(inventor => inventor.year >= 1500 && inventor.year < 1600)
-        // console.table(ans)
+        let fifteen = inventors.filter(inventor => inventor.year >= 1500 && inventor.year < 1600)
+        console.table(fifteen)
 
 
 
@@ -124,12 +124,12 @@
         // 2. Give us an array of the inventors' first and last names
 
         /* map會產生新的陣列 */
-        // let ans = inventors.map(inventor => inventor.first + " " + inventor.last)
+        let fullNames = inventors.map(inventor => inventor.first + " " + inventor.last)
 
         /* forEach可產生對應的陣列 */
         // let ans = []
         // inventors.forEach(inventor => ans.push(inventor.first + " " + inventor.last))
-        // console.table(ans)
+        console.table(fullNames)
 
 
 
@@ -137,8 +137,8 @@
         // 3. Sort the inventors by birthdate, oldest to youngest
 
         /* 以往會因為資料的筆數不同，選擇穩定或不穩定排序，目前Chrome版本較沒問題 */
-        // let ans = inventors.sort((a, b) => a.year - b.year)
-        // console.table(ans)
+        let ordered = inventors.sort((a, b) => a.year - b.year)
+        console.table(ordered)
 
 
 
@@ -151,16 +151,18 @@
         // })
 
         /* 每一筆資料的總和，從0開始算 */
-        // let total = inventors.reduce((total, inventor) => {
-        //     return total + inventor.passed - inventor.year
-        // }, 0)   // 第二參數0為起始值
+        let totalYears = inventors.reduce((total, inventor) => {
+            return total + inventor.passed - inventor.year
+        }, 0)   // 第二參數0為起始值
+
+        console.log(totalYears)
 
 
 
         // 5. Sort the inventors by years lived
 
-        // let ans = inventors.sort((a, b) => (a.passed - a.year) - (b.passed - b.year))
-        // console.table(ans)
+        let oldest = inventors.sort((a, b) => (a.passed - a.year) - (b.passed - b.year))
+        console.table(oldest)
 
 
 
@@ -178,14 +180,14 @@
         // 7. sort Exercise
         // Sort the people alphabetically by last name
 
-        let ans = people.sort((a, b) => {
-            let [aFirst, aLast] = a.split(", ")
-            let [bFirst, bLast] = b.split(", ")
+        const alpha = people.sort((a, b) => {
+            const [aFirst, aLast] = a.split(", ")
+            const [bFirst, bLast] = b.split(", ")
 
-            return aLast[0] > bLast[0] ? 1 : aLast[0] < bLast[0] ? -1 :0   // 只判斷第一個字元，其餘保持原序
+            // 只判斷第一個字元，其餘保持原序
+            return ((aLast[0] > bLast[0]) ? 1 : (aLast[0] < bLast[0]) ? -1 : 0)
         })
-        console.table(ans)
-
+        console.table(alpha)
 
 
         // 8. Reduce Exercise
@@ -193,6 +195,15 @@
         const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car',
             'truck'
         ];
+
+        let transportation = data.reduce((obj, item) => {
+            if (obj[item] == undefined) obj[item] = 1   // 初始化建立
+            else obj[item]++
+
+            return obj
+        }, {})
+
+        console.table(transportation)
     </script>
 </body>
 
