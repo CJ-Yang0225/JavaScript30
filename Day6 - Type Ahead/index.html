@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <form class="search-form">
+        <input type="text" class="search" placeholder="City or State">
+        <ul class="suggestions">
+            <li>Filter for a city</li>
+            <li>or a state</li>
+        </ul>
+    </form>
+    <script>
+        const endpoint =
+            'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+        /* 傳統的callback */
+        // let req = new XMLHttpRequest();
+        // req.addEventListener('load', requestHandler);
+        // req.open('GET', endpoint);
+        // req.send();
+
+        // function requestHandler() {
+        //     console.log(JSON.parse(this.response));
+        // }
+
+        const cities = []; //const可防範cities被覆寫
+        /* fetch類似promise，沒有progress */
+        fetch(endpoint)
+            .then(blob => blob.json())
+            .then(data => cities.push(...data)); // ES6...解構
+
+        /* 同上，較舊式直覺 */
+        // let cities = null;
+        // fetch(endpoint)
+        //     .then(blob => blob.json())
+        //     .then(data => (cities = data));
+
+        const searchInput = document.querySelector('.search');
+        const suggestions = document.querySelector('.suggestions');
+
+        document.querySelector(".search").addEventListener('keyup', iputHandler);
+        document.querySelector(".search").addEventListener('change', iputHandler);
+
+
+        function iputHandler() {
+            const matchArray = findMatches(this.value, cities);
+            console.log(matchArray);
+            const html = matchArray
+                .map(place => {
+                    const regex = new RegExp(this.value, "gi");
+                    const cityName = place.city.replace(
+                        regex,
+                        `<span class="hl">${this.value}</span>`
+                    );
+                    const stateName = place.state.replace(
+                        regex,
+                        `<span class="hl">${this.value}</span>`
+                    );
+                    return `
+                        <li>
+                            <span class="name">${cityName}, ${stateName}</span>
+                            <span class="population">${numberWithCommas(place.population)}</span>
+                        </li>
+                    `;
+                }).join("");
+            suggestions.innerHTML = html;
+        }
+
+        /* Pure Function，不會更動原資料 */
+        function findMatches(wordToMatch, cities) {
+            return cities.filter(place => {
+                const regex = new RegExp(wordToMatch, "gi");    //全域不分大小寫
+                return place.city.match(regex) || place.state.match(regex);
+            });
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // return (x * 1).toLocaleString()        
+        }
+    </script>
+</body>
+
+</html>
