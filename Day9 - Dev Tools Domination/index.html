@@ -190,6 +190,39 @@
                 let j4 = i4;
             }
             console.timeEnd("i 在外面");
+
+            console.time("test array1");
+            let array1 = [];
+            for (let i = 1; i < 1000000; i++) {
+                array1.push(i);
+            }
+
+            array1.forEach(item => {
+                let j = item;
+            });
+            console.timeEnd("test array1");
+
+            console.time("test array2");
+            let array2 = [];
+            for (let i = 1; i < 1000000; i++) {
+                array2.push({ count: i });
+            }
+
+            array2.forEach(item => {
+                let j = item;
+            });
+            console.timeEnd("test array2");
+
+            console.time("test array3");
+            let array3 = [];
+            for (let i = 1; i < 1000000; i++) {
+                array3.push(i % 2 ? i : { count: i });
+            }
+
+            array3.forEach(item => {
+                let j = item;
+            });
+            console.timeEnd("test array3");
         </script>
     </body>
 </html>
