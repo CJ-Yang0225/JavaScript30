@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Key Detection</title>
+    <script
+      type="text/javascript"
+      src="http://www.cornify.com/js/cornify.js"
+    ></script>
+  </head>
+  <body>
+    <script>
+      const secretCode = "cjyang";
+      const input = [];
+
+      window.addEventListener("keyup", function(e) {
+        input.push(e.key);
+
+        /* 問題： input array 會因為持續輸入而不斷加長 */
+
+        /* 直觀： shift() 或 splice() */
+        // if (input.length > secretCode.length) {
+        //   input.shift(); // 移除並回傳陣列的第一個元素(此方法會改變陣列的長度)
+        //   // imput.splice(0, 1); // 刪除既有元素並或加入新元素來改變陣列的內容。從開頭刪除1個元素
+        // }
+
+        // 進階： 同 splice(0, 輸入元素數量 - 6)，也就是超出時替換掉陣列第一個元素
+        input.splice(-secretCode.length - 1, input.length - secretCode.length);
+        console.log(input);
+
+        if (input.join("").includes(secretCode)) {
+          cornify_add();
+        }
+      });
+    </script>
+  </body>
+</html>
