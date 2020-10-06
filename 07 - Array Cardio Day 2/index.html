@@ -1,96 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Array Cardio 💪💪</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
     <script>
-        // ## Array Cardio Day 2
+      // ## Array Cardio Day 2
 
-        const people = [{
-                name: 'Wes',
-                year: 1988
-            },
-            {
-                name: 'Kait',
-                year: 1986
-            },
-            {
-                name: 'Irv',
-                year: 1970
-            },
-            {
-                name: 'Lux',
-                year: 2015
-            }
-        ];
+      const people = [
+        {
+          name: "Wes",
+          year: 1988
+        },
+        {
+          name: "Kait",
+          year: 1986
+        },
+        {
+          name: "Irv",
+          year: 1970
+        },
+        {
+          name: "Lux",
+          year: 2015
+        }
+      ];
 
-        const comments = [{
-                text: 'Love this!',
-                id: 523423
-            },
-            {
-                text: 'Super good',
-                id: 823423
-            },
-            {
-                text: 'You are the best',
-                id: 2039842
-            },
-            {
-                text: 'Ramen is my fav food ever',
-                id: 123523
-            },
-            {
-                text: 'Nice Nice Nice!',
-                id: 542328
-            }
-        ];
+      const comments = [
+        {
+          text: "Love this!",
+          id: 523423
+        },
+        {
+          text: "Super good",
+          id: 823423
+        },
+        {
+          text: "You are the best",
+          id: 2039842
+        },
+        {
+          text: "Ramen is my fav food ever",
+          id: 123523
+        },
+        {
+          text: "Nice Nice Nice!",
+          id: 542328
+        }
+      ];
 
-        // Some and Every Checks
-        // Array.prototype.some() // is at least one person 19?
-        const isAdult = people.some(person => new Date().getUTCFullYear() - person.year >= 19);
-        console.log(isAdult);
+      // Some and Every Checks
+      // Array.prototype.some() // is at least one person 19?
+      const isAdult = people.some(
+        person => new Date().getUTCFullYear() - person.year >= 19
+      );
+      console.log(isAdult);
 
-        // Array.prototype.every() // is everyone 19?
-        const allAdult = people.every(person => new Date().getUTCFullYear - person.year);
-        console.log(allAdult);
+      // Array.prototype.every() // is everyone 19?
+      const allAdult = people.every(
+        person => new Date().getUTCFullYear - person.year
+      );
+      console.log(allAdult);
 
-        // Array.prototype.find()
-        // Find is like filter, but instead returns just the one you are looking for
-        // find the comment with the ID of 823423
-        /* 只回傳第一筆 */ 
-        const comment = comments.find(comment => comment.id === 823423);
-        console.log(comment);
+      // Array.prototype.find()
+      // Find is like filter, but instead returns just the one you are looking for
+      // find the comment with the ID of 823423
+      /* 只回傳第一筆 */
 
-        // Array.prototype.findIndex()
-        // Find the comment with this ID
-        // delete the comment with the ID of 823423
-        /* 只回傳第一筆 */
-        const index = comments.findIndex(comment => comment.id === 823423);
-        console.log(index);
+      const comment = comments.find(comment => comment.id === 823423);
+      console.log(comment);
 
-        /* splice會直接處理原始資料 -> 刪除特定位置(index)資料 */
-        // const deletedData = comments.splice(index, 1);
-        // console.log(deletedData, comments);
+      // Array.prototype.findIndex()
+      // Find the comment with this ID
+      // delete the comment with the ID of 823423
+      /* 只回傳第一筆 */
+      const index = comments.findIndex(comment => comment.id === 823423);
+      console.log(index);
 
-        /* slice不會直接更動原始資料 -> 複製陣列的特定位置 */
-        const ans1 = comments.slice(0, index);  // 複製開頭到index之前的資料
-        const ans2 = comments.slice(index + 1); // 複製index之後的資料
+      /* splice會直接處理原始資料 -> 刪除特定位置(index)資料 */
+      // const deletedData = comments.splice(index, 1);
+      // console.log(deletedData, comments);
 
-        // 解構、合併複製的資料(去除index的資料)
-        const newComments = [
-            ...ans1,
-            ...ans2
-        ];
+      /* slice不會直接更動原始資料 -> 複製陣列的特定位置 */
+      const ans1 = comments.slice(0, index); // 複製開頭到index之前的資料
+      const ans2 = comments.slice(index + 1); // 複製index之後的資料
 
-        console.table(newComments, comments);
+      // 解構、合併複製的資料(去除index的資料)
+      const newComments = [...ans1, ...ans2];
 
+      console.table(newComments, comments);
     </script>
-</body>
-
+  </body>
 </html>
