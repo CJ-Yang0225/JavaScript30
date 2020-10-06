@@ -1,162 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Document</title>
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
 
-    <body>
-        <style>
-            html {
-                font-family: sans-serif;
-                background: #ffc600;
-            }
+  <body>
+    <style>
+      html {
+        font-family: sans-serif;
+        background: #ffc600;
+      }
 
-            .inbox {
-                max-width: 400px;
-                margin: 50px auto;
-                background: white;
-                border-radius: 5px;
-                box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
-            }
+      .inbox {
+        max-width: 400px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+      }
 
-            .item {
-                display: flex;
-                align-items: center;
-                border-bottom: 1px solid #f1f1f1;
-            }
+      .item {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #f1f1f1;
+      }
 
-            .item:last-child {
-                border-bottom: 0;
-            }
+      .item:last-child {
+        border-bottom: 0;
+      }
 
-            /* :checked偽元素, +p指影響input後的p */
-            input:checked + p {
-                background: #f9f9f9;
-                text-decoration: line-through;
-            }
+      /* :checked偽元素, +p指影響input後的p */
+      input:checked + p {
+        background: #f9f9f9;
+        text-decoration: line-through;
+      }
 
-            input[type="checkbox"] {
-                margin: 20px;
-            }
+      input[type="checkbox"] {
+        margin: 20px;
+      }
 
-            p {
-                margin: 0;
-                padding: 20px;
-                transition: background 0.2s;
-                flex: 1;
-                font-family: "helvetica neue";
-                font-size: 20px;
-                font-weight: 200;
-                border-left: 1px solid #d1e2ff;
-            }
+      p {
+        margin: 0;
+        padding: 20px;
+        transition: background 0.2s;
+        flex: 1;
+        font-family: "helvetica neue";
+        font-size: 20px;
+        font-weight: 200;
+        border-left: 1px solid #d1e2ff;
+      }
 
-            .details {
-                text-align: center;
-                font-size: 15px;
-            }
-        </style>
-        <!--
+      .details {
+        text-align: center;
+        font-size: 15px;
+      }
+    </style>
+    <!--
    The following is a common layout you would see in an email client.
 
    When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
 
   -->
-        <div class="inbox">
-            <div class="item">
-                <input type="checkbox" />
-                <p>This is an inbox layout.</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Check one item</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Hold down your Shift key</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Check a lower item</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Everything inbetween should also be set to checked</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Try do it with out any libraries</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Just regular JavaScript</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Good Luck!</p>
-            </div>
-            <div class="item">
-                <input type="checkbox" />
-                <p>Don't forget to tweet your result!</p>
-            </div>
-        </div>
+    <div class="inbox">
+      <div class="item">
+        <input type="checkbox" />
+        <p>This is an inbox layout.</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Check one item</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Hold down your Shift key</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Check a lower item</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Everything inbetween should also be set to checked</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Try do it with out any libraries</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Just regular JavaScript</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Good Luck!</p>
+      </div>
+      <div class="item">
+        <input type="checkbox" />
+        <p>Don't forget to tweet your result!</p>
+      </div>
+    </div>
 
-        <script>
-            (function() {
-                /* querySelectorAll非完整陣列，需要透過Array.from轉換 */
-                const checkboxs = Array.from(
-                    document.querySelectorAll('.inbox input[type="checkbox"]'),
-                );
-                let lastChecked = null; // 暫存上次點選的元素
+    <script>
+      (function() {
+        /* querySelectorAll非完整陣列，需要透過Array.from轉換 */
+        const checkboxs = Array.from(
+          document.querySelectorAll('.inbox input[type="checkbox"]')
+        );
+        let lastChecked = null; // 暫存上次點選的元素
 
-                checkboxs.forEach(input => {
-                    input.addEventListener("click", clickHandler);
-                });
+        checkboxs.forEach(input => {
+          input.addEventListener("click", clickHandler);
+        });
 
-                /* 法一：陣列slice() */
-                function clickHandler(e) {
-                    if (this.checked) {
-                        // 若有第二次選取時，lastChecked不為null(需注意lastChecked值為數字)                                               
-                        if (e.shiftKey && lastChecked !== null) {
-                            let nowCheck = checkboxs.indexOf(this);
-                            // console.log(this);
-                            checkboxs
-                                /* 根據索引值範圍進行標記 */
-                                .slice(
-                                    Math.min(nowCheck, lastChecked),
-                                    Math.max(nowCheck, lastChecked),
-                                )
-                                .forEach(input => (input.checked = true));
-                        }
-                        lastChecked = checkboxs.indexOf(this);
-                        // console.log(lastChecked);
-                        // console.log(this);
-                    } else {
-                        lastChecked = null;
-                    }
-                }
+        /* 法一：陣列slice() */
+        function clickHandler(e) {
+          if (this.checked) {
+            // 若有第二次選取時，lastChecked不為null(需注意lastChecked值為數字)
+            if (e.shiftKey && lastChecked !== null) {
+              let nowCheck = checkboxs.indexOf(this);
+              // console.log(this);
+              checkboxs
+                /* 根據索引值範圍進行標記 */
+                .slice(
+                  Math.min(nowCheck, lastChecked),
+                  Math.max(nowCheck, lastChecked)
+                )
+                .forEach(input => (input.checked = true));
+            }
+            lastChecked = checkboxs.indexOf(this);
+            // console.log(lastChecked);
+            // console.log(this);
+          } else {
+            lastChecked = null;
+          }
+        }
 
-                /* 法二：利用變數 inBetween 對需要選取的元素進行標記 */
-                function clickHandler2(e) {
-                    let inBetween = false;
-                    //		console.log(lastChecked);
-                    if (e.shiftKey && this.checked) {
-                        checkboxs.forEach(input => {
-                            console.log(lastChecked, this);
-                            // 檢查是否有區間
-                            if (input === lastChecked || input === this) {
-                                inBetween = !inBetween;
-                            }
+        /* 法二：利用變數 inBetween 對需要選取的元素進行標記 */
+        function clickHandler2(e) {
+          let inBetween = false;
+          //		console.log(lastChecked);
+          if (e.shiftKey && this.checked) {
+            checkboxs.forEach(input => {
+              console.log(lastChecked, this);
+              // 檢查是否有區間
+              if (input === lastChecked || input === this) {
+                inBetween = !inBetween;
+              }
 
-                            // 若有區間，則標記
-                            if (inBetween) {
-                                input.checked = true;
-                            }
-                        });
-                    }
-                    lastChecked = this;
-                }
-            })();
-        </script>
-    </body>
+              // 若有區間，則標記
+              if (inBetween) {
+                input.checked = true;
+              }
+            });
+          }
+          lastChecked = this;
+        }
+      })();
+    </script>
+  </body>
 </html>
