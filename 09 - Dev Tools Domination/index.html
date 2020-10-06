@@ -1,228 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Console Tricks!</title>
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console Tricks!</title>
+  </head>
 
-    <body>
-        <p onClick="makeGreen()">×BREAK×DOWN×</p>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
-        <script>
-            const dogs = [
-                {
-                    name: "Snickers",
-                    age: 2,
-                },
-                {
-                    name: "hugo",
-                    age: 8,
-                },
-            ];
+    <script>
+      const dogs = [
+        {
+          name: "Snickers",
+          age: 2
+        },
+        {
+          name: "hugo",
+          age: 8
+        }
+      ];
 
-            function makeGreen() {
-                const p = document.querySelector("p");
-                p.style.color = "#BADA55";
-                p.style.fontSize = "50px";
-            }
+      function makeGreen() {
+        const p = document.querySelector("p");
+        p.style.color = "#BADA55";
+        p.style.fontSize = "50px";
+      }
 
-            /* 方便測試的封裝 */
-            let console = {
-                // false可關閉
-                isDev: true,
-                log(...args) {
-                    if (!this.log) return;
-                    window.console.log(...args);
-                },
+      /* 方便測試的封裝 */
+      let console = {
+        // false可關閉
+        isDev: true,
+        log(...args) {
+          if (!this.log) return;
+          window.console.log(...args);
+        },
 
-                warn(...args) {
-                    if (!this.log) return;
-                    window.console.warn(...args);
-                },
+        warn(...args) {
+          if (!this.log) return;
+          window.console.warn(...args);
+        },
 
-                error(...args) {
-                    if (!this.log) return;
-                    window.console.error(...args);
-                },
+        error(...args) {
+          if (!this.log) return;
+          window.console.error(...args);
+        },
 
-                info(...args) {
-                    if (!this.log) return;
-                    window.console.info(...args);
-                },
+        info(...args) {
+          if (!this.log) return;
+          window.console.info(...args);
+        },
 
-                assert(...args) {
-                    if (!this.log) return;
-                    window.console.assert(...args);
-                },
+        assert(...args) {
+          if (!this.log) return;
+          window.console.assert(...args);
+        },
 
-                dir(...args) {
-                    if (!this.log) return;
-                    window.console.dir(...args);
-                },
+        dir(...args) {
+          if (!this.log) return;
+          window.console.dir(...args);
+        },
 
-                table(...args) {
-                    if (!this.log) return;
-                    window.console.table(...args);
-                },
+        table(...args) {
+          if (!this.log) return;
+          window.console.table(...args);
+        },
 
-                group(...args) {
-                    if (!this.log) return;
-                    window.console.group(...args);
-                },
+        group(...args) {
+          if (!this.log) return;
+          window.console.group(...args);
+        },
 
-                groupEnd(...args) {
-                    if (!this.log) return;
-                    window.console.groupEnd(...args);
-                },
+        groupEnd(...args) {
+          if (!this.log) return;
+          window.console.groupEnd(...args);
+        },
 
-                groupCollapsed(...args) {
-                    if (!this.log) return;
-                    window.console.groupCollapsed(...args);
-                },
+        groupCollapsed(...args) {
+          if (!this.log) return;
+          window.console.groupCollapsed(...args);
+        },
 
-                count(...args) {
-                    if (!this.log) return;
-                    window.console.count(...args);
-                },
+        count(...args) {
+          if (!this.log) return;
+          window.console.count(...args);
+        },
 
-                time(...args) {
-                    if (!this.log) return;
-                    window.console.time(...args);
-                },
+        time(...args) {
+          if (!this.log) return;
+          window.console.time(...args);
+        },
 
-                timeEnd(...args) {
-                    if (!this.log) return;
-                    window.console.timeEnd(...args);
-                },
-            };
+        timeEnd(...args) {
+          if (!this.log) return;
+          window.console.timeEnd(...args);
+        }
+      };
 
-            // Regular
-            console.log("自訂console", "小工具");
+      // Regular
+      console.log("自訂console", "小工具");
 
-            // Interpolated
-            console.log("Hello I am a %s string!", "💩");
-            console.log("I have %f dollars", 99.87);
-            console.log("I have %d dollars", 99.87);
+      // Interpolated
+      console.log("Hello I am a %s string!", "💩");
+      console.log("I have %f dollars", 99.87);
+      console.log("I have %d dollars", 99.87);
 
-            //Template string (ES6)
-            let name = "Jerry";
-            console.log(`My name is ${name}`);
+      //Template string (ES6)
+      let name = "Jerry";
+      console.log(`My name is ${name}`);
 
-            // Styled
-            console.log("%c住手", "font-size: 60px; color: red;");
+      // Styled
+      console.log("%c住手", "font-size: 60px; color: red;");
 
-            // warning!
-            console.warn("警告");
+      // warning!
+      console.warn("警告");
 
-            // Error :|
-            console.error("錯誤");
+      // Error :|
+      console.error("錯誤");
 
-            // Info
-            console.info("好像跟log一樣");
+      // Info
+      console.info("好像跟log一樣");
 
-            // Testing 若第一個參數未通過，則出現錯誤訊息
-            console.assert(false, "false: 訊息");
-            console.assert("", '"": 訊息');
-            console.assert(0, "0: 訊息");
-            console.assert(NaN, "NaN: 訊息");
-            console.assert(null, "null: 訊息");
-            console.assert(undefined, "undefined: 訊息");
+      // Testing 若第一個參數未通過，則出現錯誤訊息
+      console.assert(false, "false: 訊息");
+      console.assert("", '"": 訊息');
+      console.assert(0, "0: 訊息");
+      console.assert(NaN, "NaN: 訊息");
+      console.assert(null, "null: 訊息");
+      console.assert(undefined, "undefined: 訊息");
 
-            // clearing
-            // window.console.clear();    // CTRL + L
+      // clearing
+      // window.console.clear();    // CTRL + L
 
-            // Viewing DOM Elements
-            let p = document.querySelector("p");
-            console.log(p);
-            console.dir(p); // 展開一個object的屬性、功能
+      // Viewing DOM Elements
+      let p = document.querySelector("p");
+      console.log(p);
+      console.dir(p); // 展開一個object的屬性、功能
 
-            // Grouping together
-            console.table(dogs);
+      // Grouping together
+      console.table(dogs);
 
-            dogs.forEach(dog => {
-                console.group();
-                // console.groupCollapsed(); // 收起列表
-                console.log(`${dog.name}`);
-                console.log(`${dog.age}`);
-                console.log(`${dog.name} 有 ${dog.age} 歲了`);
-                console.groupEnd();
-            });
+      dogs.forEach(dog => {
+        console.group();
+        // console.groupCollapsed(); // 收起列表
+        console.log(`${dog.name}`);
+        console.log(`${dog.age}`);
+        console.log(`${dog.name} 有 ${dog.age} 歲了`);
+        console.groupEnd();
+      });
 
-            // counting
-            console.count("Wes");
-            console.count("Wes");
-            console.count("Steve");
-            console.count("Steve");
-            console.count("Wes");
-            console.count("Steve");
-            console.count("Wes");
-            console.count("Steve");
-            console.count("Steve");
-            console.count("Steve");
-            console.count("Steve");
-            console.count("Steve");
+      // counting
+      console.count("Wes");
+      console.count("Wes");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Wes");
+      console.count("Steve");
+      console.count("Wes");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Steve");
 
-            // timing
-            console.time("i,j 在外面");
-            let i1;
-            let j1;
-            for (i1 = 1; i1 < 10000000; i1++) {
-                j1 = i1;
-            }
-            console.timeEnd("i,j 在外面");
+      // timing
+      console.time("i,j 在外面");
+      let i1;
+      let j1;
+      for (i1 = 1; i1 < 10000000; i1++) {
+        j1 = i1;
+      }
+      console.timeEnd("i,j 在外面");
 
-            console.time("i,j 在裡面");
-            for (let i2 = 1; i2 < 10000000; i2++) {
-                let j2 = i2;
-            }
-            console.timeEnd("i,j 在裡面");
+      console.time("i,j 在裡面");
+      for (let i2 = 1; i2 < 10000000; i2++) {
+        let j2 = i2;
+      }
+      console.timeEnd("i,j 在裡面");
 
-            console.time("j 在外面");
-            let j3;
-            for (let i3 = 1; i3 < 10000000; i3++) {
-                let j3 = i3;
-            }
-            console.timeEnd("j 在外面");
+      console.time("j 在外面");
+      let j3;
+      for (let i3 = 1; i3 < 10000000; i3++) {
+        let j3 = i3;
+      }
+      console.timeEnd("j 在外面");
 
-            console.time("i 在外面");
-            let i4;
-            for (let i4 = 1; i4 < 10000000; i4++) {
-                let j4 = i4;
-            }
-            console.timeEnd("i 在外面");
+      console.time("i 在外面");
+      let i4;
+      for (let i4 = 1; i4 < 10000000; i4++) {
+        let j4 = i4;
+      }
+      console.timeEnd("i 在外面");
 
-            console.time("test array1");
-            let array1 = [];
-            for (let i = 1; i < 1000000; i++) {
-                array1.push(i);
-            }
+      console.time("test array1");
+      let array1 = [];
+      for (let i = 1; i < 1000000; i++) {
+        array1.push(i);
+      }
 
-            array1.forEach(item => {
-                let j = item;
-            });
-            console.timeEnd("test array1");
+      array1.forEach(item => {
+        let j = item;
+      });
+      console.timeEnd("test array1");
 
-            console.time("test array2");
-            let array2 = [];
-            for (let i = 1; i < 1000000; i++) {
-                array2.push({ count: i });
-            }
+      console.time("test array2");
+      let array2 = [];
+      for (let i = 1; i < 1000000; i++) {
+        array2.push({ count: i });
+      }
 
-            array2.forEach(item => {
-                let j = item;
-            });
-            console.timeEnd("test array2");
+      array2.forEach(item => {
+        let j = item;
+      });
+      console.timeEnd("test array2");
 
-            console.time("test array3");
-            let array3 = [];
-            for (let i = 1; i < 1000000; i++) {
-                array3.push(i % 2 ? i : { count: i });
-            }
+      console.time("test array3");
+      let array3 = [];
+      for (let i = 1; i < 1000000; i++) {
+        array3.push(i % 2 ? i : { count: i });
+      }
 
-            array3.forEach(item => {
-                let j = item;
-            });
-            console.timeEnd("test array3");
-        </script>
-    </body>
+      array3.forEach(item => {
+        let j = item;
+      });
+      console.timeEnd("test array3");
+    </script>
+  </body>
 </html>
