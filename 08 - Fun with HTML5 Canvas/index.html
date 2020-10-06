@@ -1,73 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>HTML5 Canvas</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <canvas id="draw" width="800" height="800"></canvas>
     <script>
-        (function () {
-            let canvas = document.querySelector("#draw");
-            let ctx = canvas.getContext("2d");
-            let isDrawing = false;
-            let lastX = 0,
-                lastY = 0;
-            let lineWidth = 100;
-            let colorDeg = 0;
-            let direction = -1;
+      (function() {
+        let canvas = document.querySelector("#draw");
+        let ctx = canvas.getContext("2d");
+        let isDrawing = false;
+        let lastX = 0,
+          lastY = 0;
+        let lineWidth = 100;
+        let colorDeg = 0;
+        let direction = -1;
 
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            ctx.strokeStyle = `hsl(${colorDeg}, 100%, 50%)`;
-            ctx.lineWidth = lineWidth;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.strokeStyle = `hsl(${colorDeg}, 100%, 50%)`;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
 
-            canvas.addEventListener("mousedown", e => {
-                isDrawing = true;
-                [lastX, lastY] = [e.offsetX, e.offsetY];
-            });
+        canvas.addEventListener("mousedown", e => {
+          isDrawing = true;
+          [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
 
-            canvas.addEventListener("mousemove", e => {
-                if (!isDrawing) return;
-                ctx.beginPath();
-                colorDeg = colorDeg < 360 ? colorDeg + 1 : 0;
-                ctx.strokeStyle = `hsl(${colorDeg}, 100%, 50%)`;
+        canvas.addEventListener("mousemove", e => {
+          if (!isDrawing) return;
+          ctx.beginPath();
+          colorDeg = colorDeg < 360 ? colorDeg + 1 : 0;
+          ctx.strokeStyle = `hsl(${colorDeg}, 100%, 50%)`;
 
-                if (lineWidth < 1 || lineWidth > 100) direction *= -1;
-                lineWidth += direction;
-                ctx.lineWidth = lineWidth;
+          if (lineWidth < 1 || lineWidth > 100) direction *= -1;
+          lineWidth += direction;
+          ctx.lineWidth = lineWidth;
 
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(e.offsetX, e.offsetY);
-                [lastX, lastY] = [e.offsetX, e.offsetY];
-                ctx.stroke();
-            });
+          ctx.moveTo(lastX, lastY);
+          ctx.lineTo(e.offsetX, e.offsetY);
+          [lastX, lastY] = [e.offsetX, e.offsetY];
+          ctx.stroke();
+        });
 
-            canvas.addEventListener("mouseup", () => {
-                isDrawing = false;
-            });
+        canvas.addEventListener("mouseup", () => {
+          isDrawing = false;
+        });
 
-            /* DOM target轉換時會連續觸發，多層須注意 */
-            // canvas.addEventListener("mouseout", () => {});
+        /* DOM target轉換時會連續觸發，多層須注意 
+        (mouseout 會冒泡 -> 離開被選元素還是任何子元素，都會觸發) */
+        // canvas.addEventListener("mouseout", () => {});
 
-            canvas.addEventListener("mouseleave", () => {
-                isDrawing = false;
-            });
-        })();
-
+        canvas.addEventListener("mouseleave", () => {
+          isDrawing = false;
+        });
+      })();
     </script>
 
     <style>
-        html,
-        body {
-            margin: 0;
-        }
-
+      html,
+      body {
+        margin: 0;
+      }
     </style>
-</body>
-
+  </body>
 </html>
