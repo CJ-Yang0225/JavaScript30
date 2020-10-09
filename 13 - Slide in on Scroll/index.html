@@ -235,10 +235,10 @@
             if (!immediate) func.apply(context, args);
           };
           var callNow = immediate && !timeout;
-          clearTimeout(timeout);
+          clearTimeout(timeout); // reset 不觸發
           timeout = setTimeout(later, wait);
-          // apply() 呼叫一個以 this 的代表值和一個陣列形式的值組(適合arguments)，
-          // 和call() 幾乎一樣，最大的不同是 call() 接受一連串的參數，
+          /* apply() 呼叫一個以 this 的代表值和一個陣列形式的值組(適合arguments)，
+          和call() 幾乎一樣，最大的不同是 call() 接受一連串的參數 */
           if (callNow) func.apply(context, args);
         };
       }
