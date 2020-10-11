@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS Reference VS Copy</title>
+  </head>
+  <body>
+    <script>
+      // 從 String、Number、Boolean 類型的值開始：
+      let name = "Yang";
+      let name2 = name;
+      name = "CJ";
+      console.log(name, name2); // CJ Yang
+
+      let age = 100;
+      let age2 = age;
+      age = 200;
+      console.log(age, age2); // 200 100
+
+      let bool = true;
+      let bool2 = bool;
+      bool = false;
+      console.log(bool, bool2); // false true
+
+      let a = "A";
+      let b = "A";
+      let c = "A";
+      (b = "B"), (c = "C"), (a += b), (a += c);
+      console.log(a, b, c); // ABC B C
+
+      // 首先我們有一個數組
+      const players = ["Wes", "Sarah", "Ryan", "Poppy"];
+
+      // 現在我們想要復制它
+
+      // 也許你覺得可以直接這樣修改複製後的數組:
+      let team = players;
+
+      // 但我們修改這個數組的時候會發生什麼呢？
+      team[0] = "Jerry";
+
+      // 這就是問題所在
+      console.log(players, team);
+      // NO！原數組也被修改過了
+
+      // 為什麼？因為它們都參照同一個陣列，並不是它的複制。
+
+      // 所以如何解決這個問題？下面來進行真正的複制吧。
+
+      // one day
+      let team2 = players.slice();
+      team2[0] = "Jerry";
+      console.log("slice:", team2);
+
+      // 或者創建一個新數組，然後用 concat 方法來獲取它
+      let team3 = [].concat(players);
+      console.log("concat:", team);
+
+      // 再或者用 ES6 裡面的擴展語法
+      let team4 = [...players]; // 解構
+      console.log("ES6:", team4);
+
+      const team5 = Array.from(players);
+      console.log("Array.from:", team5);
+
+      // 現在再修改 team5，原數組不會變了
+      team5[1] = "Yang";
+      console.log("修改team5:\n", team5, players);
+
+      function createObj(name) {
+        return {
+          name // 縮寫，物件名稱與屬性名稱相同時，則不需要寫兩次
+        };
+      }
+
+      let p1 = createObj("CJ");
+      let p2 = createObj("Yang");
+      let p3 = createObj("JoJo");
+      let p4 = createObj("Iggy");
+
+      let team6 = [p1, p2, p3, p4];
+      let team7 = team6.slice(); // 同 concat、...
+
+      team7[0].name = "Jerry";
+
+      //   team7[0] = { name: "Jerry" }; // 新增一個物件，所以參照不同
+      console.log("team6:", team6, "\nteam7:", team7);
+
+      // 對 Object 類型的數據來說也是一樣的，我們用一個 person 例子來說明
+
+      // 現在又一個 Object 對象
+      const person = {
+        name: "Wes Bos",
+        age: 80
+      };
+
+      // 然後以為這樣可以復制它:
+      let man = person;
+      console.log("man:", man);
+      man.name = "CJ Yang";
+      console.log("man:", man, "\nperson:", person);
+
+      // 到底要怎樣才能真正得到它的複製版呢？
+      /* 淺拷貝： 複製的物件只有一層，兩層以上會與舊物件共用同一塊記憶體 */
+      let man2 = Object.assign({}, person, { name: "Jerry Yang", age: 12 });
+      console.log("man2:", man2, "\nperson:", person);
+
+      // 我們滿懷期望的希望擴展語法對它也會生效
+      let man3 = { ...person };
+      console.log("man3:", man3);
+
+      // 需要注意的是：這裡的例子裡面，我們用的數組和對像都只是一層嵌套，Lodash 有一個深度複製的方法，但你使用之前需要多考慮一下。
+      const wes = {
+        name: "Wes",
+        age: 100,
+        social: {
+          twitter: "@wesbos",
+          facebook: "wesbos.developer"
+        }
+      };
+
+      //    console.clear();
+      //    console.log(wes);
+
+      const dev = Object.assign({}, wes);
+      dev.social.twitter = "@xxxxxx";
+      console.log("dev:", dev, "\nwes:", wes);
+
+      /* 深拷貝：建立另一個相同的物件，兩者不共用記憶體，修改新物件不影響原物件 */
+      const dev2 = JSON.parse(JSON.stringify(wes));
+      dev2.social.facebook = "xxxxxx.developer";
+      console.log("dev2:", dev2, "\nwes:", wes);
+    </script>
+  </body>
+</html>
