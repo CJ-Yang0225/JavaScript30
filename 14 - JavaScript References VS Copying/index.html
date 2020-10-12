@@ -102,7 +102,7 @@
 
       // 到底要怎樣才能真正得到它的複製版呢？
       /* 淺拷貝： 複製的物件只有一層，兩層以上會與舊物件共用同一塊記憶體 */
-      let man2 = Object.assign({}, person, { name: "Jerry Yang", age: 12 });
+      let man2 = Object.assign({}, person, { number: 87, age: 12 });
       console.log("man2:", man2, "\nperson:", person);
 
       // 我們滿懷期望的希望擴展語法對它也會生效
