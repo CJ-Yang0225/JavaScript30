@@ -126,7 +126,7 @@
       dev.social.twitter = "@xxxxxx";
       console.log("dev:", dev, "\nwes:", wes);
 
-      /* 深拷貝：建立另一個相同的物件，兩者不共用記憶體，修改新物件不影響原物件 */
+      /* 深拷貝：建立另一個相同的物件，兩者不共用記憶體，修改新物件不影響原物件 (function會無效)*/
       const dev2 = JSON.parse(JSON.stringify(wes));
       dev2.social.facebook = "xxxxxx.developer";
       console.log("dev2:", dev2, "\nwes:", wes);
