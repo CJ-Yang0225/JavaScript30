@@ -137,19 +137,19 @@
       /* function 拷貝 */
       Function.prototype.clone = function() {
         var originalFunc = this;
-        var objectiveFunc = function() {
+        var temp = function() {
           return originalFunc.apply(this, arguments);
         };
-        objectiveFunc.prototype = originalFunc.prototype;
+        temp.prototype = originalFunc.prototype;
         for (property in originalFunc) {
           if (
             originalFunc.hasOwnProperty(property) &&
             property !== "prototype"
           ) {
-            objectiveFunc[property] = originalFunc[property];
+            temp[property] = originalFunc[property];
           }
         }
-        return objectiveFunc;
+        return temp;
       };
 
       let func2 = func1.clone();
