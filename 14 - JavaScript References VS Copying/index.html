@@ -130,6 +130,31 @@
       const dev2 = JSON.parse(JSON.stringify(wes));
       dev2.social.facebook = "xxxxxx.developer";
       console.log("dev2:", dev2, "\nwes:", wes);
+
+      let func1 = function() {
+        console.log("I'm funct1");
+      };
+      /* function 拷貝 */
+      Function.prototype.clone = function() {
+        var originalFunc = this;
+        var objectiveFunc = function() {
+          return originalFunc.apply(this, arguments);
+        };
+        objectiveFunc.prototype = originalFunc.prototype;
+        for (property in originalFunc) {
+          if (
+            originalFunc.hasOwnProperty(property) &&
+            property !== "prototype"
+          ) {
+            objectiveFunc[property] = originalFunc[property];
+          }
+        }
+        return objectiveFunc;
+      };
+
+      let func2 = func1.clone();
+
+      console.log("func1 !== funct2:", func1 !== func2);
     </script>
   </body>
 </html>
