@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mouse Shadow</title>
+  </head>
+  <body>
+    <div class="hero">
+      <h1 contenteditable>🔥WOAH!</h1>
+    </div>
+
+    <style>
+      html {
+        color: black;
+        font-family: sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+      }
+
+      h1 {
+        text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+        font-size: 100px;
+      }
+    </style>
+
+    <script>
+      (function() {
+        document
+          .querySelector(".hero")
+          .addEventListener("mousemove", function(e) {
+            // ES5
+            // let x = e.offsetX;
+            // let y = e.offsetY;
+
+            // ES6 解構賦值+重新命名
+            // let { offsetX: x, offsetY: y } = e;
+
+            // ES6 解構賦值(Destructuring assignment)
+            let { offsetX, offsetY } = e; // 注意：含子元素的 offset
+
+            /* 因為進到子元素<h1> offset會從(0,0)開始計算，
+            所以當事件的目標不在 <div class="hero"> 時，要修正誤差 */
+            if (e.target !== this) {
+              offsetX += e.target.offsetLeft;
+              offsetY += e.target.offsetTop;
+            }
+
+            // 滑鼠所在位置在畫面中的百分比
+            console.log(
+              Math.round((offsetX / this.offsetWidth) * 100),
+              Math.round((offsetY / this.offsetHeight) * 100)
+            );
+          });
+      })();
+    </script>
+  </body>
+</html>
