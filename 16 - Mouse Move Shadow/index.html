@@ -34,9 +34,11 @@
     </style>
 
     <script>
+      const text = document.querySelector("h1");
       (function() {
         document
           .querySelector(".hero")
+          // 一般 Function 的 this 指向事件綁定的對象(這裡為.hero)，Arrow Function 則要特別注意
           .addEventListener("mousemove", function(e) {
             // ES5
             // let x = e.offsetX;
@@ -48,18 +50,29 @@
             // ES6 解構賦值(Destructuring assignment)
             let { offsetX, offsetY } = e; // 注意：含子元素的 offset
 
-            /* 因為進到子元素<h1> offset會從(0,0)開始計算，
-            所以當事件的目標不在 <div class="hero"> 時，要修正誤差 */
+            /* 因為target換了，進到子元素<h1> offset會從(0,0)開始計算，
+            所以當 e.target 不在 <div class="hero"> 時，要修正數值 */
             if (e.target !== this) {
               offsetX += e.target.offsetLeft;
               offsetY += e.target.offsetTop;
-            }
+            } /* currentTarget 屬性會指向當時處理該事件的事件監聽器所註冊的 DOM 物件
+                 target 屬性則是永遠指向觸發事件的 DOM 物件 (這裡 this 同 currentTarget)*/
 
-            // 滑鼠所在位置在畫面中的百分比
-            console.log(
-              Math.round((offsetX / this.offsetWidth) * 100),
-              Math.round((offsetY / this.offsetHeight) * 100)
-            );
+            // 滑鼠所在位置在畫面中的百分比 (*2 - 100，使 0～100 -> -100～100)
+            let xWalk =
+              Math.round((offsetX / this.offsetWidth) * 100) * 2 - 100;
+            let yWalk =
+              Math.round((offsetY / this.offsetHeight) * 100) * 2 - 100;
+
+            console.log(xWalk, yWalk);
+
+            // Template String 調整 textShadow Property
+            text.style.textShadow = `
+              ${xWalk}px ${yWalk}px 2px rgba(255,0,255,0.7),
+              ${xWalk * -1}px ${yWalk}px 2px rgba(0,255,255,0.7),
+              ${yWalk}px ${xWalk * -1}px 2px rgba(0,255,0,0.7),
+              ${yWalk * -1}px ${xWalk}px 2px rgba(0,0,255,0.7)
+            `;
           });
       })();
     </script>
