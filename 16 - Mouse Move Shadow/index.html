@@ -53,7 +53,9 @@
             /* 因為target換了，進到子元素<h1> offset會從(0,0)開始計算，
             所以當 e.target 不在 <div class="hero"> 時，要修正數值 */
             if (e.target !== this) {
+              // offsetLeft = offsetParent 的 padding-left + 中間元素的 offsetWidth + 當前元素的 margin-left
               offsetX += e.target.offsetLeft;
+              // offsetTop = offsetParent 的 padding-top + 中間元素的 offsetHeight + 當前元素的 margin-top
               offsetY += e.target.offsetTop;
             } /* currentTarget 屬性會指向當時處理該事件的事件監聽器所註冊的 DOM 物件
                  target 屬性則是永遠指向觸發事件的 DOM 物件 (這裡 this 同 currentTarget)*/
