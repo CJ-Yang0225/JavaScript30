@@ -208,9 +208,14 @@
       timeFormatter(result4);
 
       function timeFormatter(totalSeconds) {
+        // let seconds = totalSeconds % 60;
+        // let minutes = ((totalSeconds - seconds) / 60) % 60;
+        // let hours = (totalSeconds - minutes * 60 - seconds) / 3600;
+
+        let hours = Math.floor(totalSeconds / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
         let seconds = totalSeconds % 60;
-        let minutes = ((totalSeconds - seconds) / 60) % 60;
-        let hours = (totalSeconds - minutes * 60 - seconds) / 3600;
+
         document.querySelector(
           "#totalTime"
         ).innerHTML = `${hours} : ${minutes} : ${seconds}`;
