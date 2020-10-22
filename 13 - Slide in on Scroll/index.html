@@ -229,7 +229,7 @@
         return function() {
           var context = this, // 對 Input 做監聽，所以 this -> Input
             args = arguments; // 類陣列 (Array-like)，可取得所有參數
-          console.log(args);
+          console.log(this);
           var later = function() {
             timeout = null;
             if (!immediate) func.apply(context, args);
