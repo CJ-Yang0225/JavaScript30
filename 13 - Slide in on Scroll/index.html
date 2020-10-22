@@ -7,7 +7,7 @@
   <body>
     <div class="site-wrap">
       <h1>Slide in on Scroll</h1>
-
+      <input type="text" id="test" placeholder="Debounce 測試" />
       <p>
         Consectetur adipisicing elit. Tempore tempora rerum, est autem
         cupiditate, corporis a qui libero ipsum delectus quidem dolor at nulla,
@@ -227,9 +227,9 @@
       function debounce(func, wait = 20, immediate = true) {
         var timeout;
         return function() {
-          var context = this,
+          var context = this, // 對 Input 做監聽，所以 this -> Input
             args = arguments; // 類陣列 (Array-like)，可取得所有參數
-          // console.log(context);
+          console.log(args);
           var later = function() {
             timeout = null;
             if (!immediate) func.apply(context, args);
@@ -247,7 +247,7 @@
       function throttle(func, wait = 20, immediate = true) {
         let last;
         let timeout;
-        // 以此^ function 為基準產生一個作用域： this -> Window
+        // 以此^ function 為基準產生一個作用域： this -> Window (若事件在window下監聽)
         return () => {
           // const context = this;
           // console.log(this);
@@ -268,7 +268,7 @@
       }
 
       const sliderImages = document.querySelectorAll(".slide-in");
-
+      const testInput = document.querySelector("#test");
       function scrollHandler() {
         const windowTop = window.scrollY; // 網頁上方基準線
         const windowBottom = windowTop + innerHeight; // 網頁下方基準線
@@ -291,7 +291,18 @@
         });
       }
 
-      window.addEventListener("scroll", throttle(scrollHandler, 50));
+      function testDebounce() {
+        console.log(`測試 Debounce 的 this 在： ${this}`);
+      }
+
+      /* 簡單判斷 this 的指向：
+       * 第一步 - function 是否立即執行? 如果是，直接跳到第三步
+       * 第二步 - 若不是，可能在某個物件上，或者轉交給了誰
+       * 第三步 - function 被誰調用，this 就指向它
+       *
+       * 參考：https://www.itread01.com/content/1549089366.html */
+      testInput.addEventListener("input", debounce(testDebounce, 500));
+      window.addEventListener("scroll", throttle(scrollHandler, 100));
     </script>
 
     <style>
