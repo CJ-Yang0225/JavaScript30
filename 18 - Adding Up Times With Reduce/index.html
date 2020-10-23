@@ -183,7 +183,6 @@
       </li>
     </ul>
     <script>
-      // (function() {
       /* 注意：選取器選取的內容 (NodeList 類似但不是 Array，所以不能map，可以forEach) */
       const li = document.querySelectorAll("li");
 
@@ -192,6 +191,7 @@
 
       // 方法二： apply()、call()
       let result2 = [].map.apply(li, [item => item]);
+      // 同 Array.prototype.map。 map 會建立新的陣列，this -> li
       let result3 = [].map.call(li, item => item);
 
       // 方法三： ES6 - Destructuring Assignment
@@ -203,14 +203,22 @@
         .reduce((a, b) => {
           return a + b;
         }, 0);
+
       console.log(result4 + " 秒");
-      // })();
+
       timeFormatter(result4);
 
       function timeFormatter(totalSeconds) {
+        /* 不同的邏輯思考： */
+
         // let seconds = totalSeconds % 60;
         // let minutes = ((totalSeconds - seconds) / 60) % 60;
         // let hours = (totalSeconds - minutes * 60 - seconds) / 3600;
+
+        // let seconds = totalSeconds % 60;
+        // let minutes = (totalSeconds - seconds) / 60;
+        // let hours = Math.floor(minutes / 60);
+        // minutes %= 60;
 
         let hours = Math.floor(totalSeconds / 3600);
         let minutes = Math.floor((totalSeconds % 3600) / 60);
