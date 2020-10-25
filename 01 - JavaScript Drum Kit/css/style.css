@@ -21,7 +21,7 @@ html {
 
 .key {
   border: 4px solid black;
-  border-radius: 5px;
+  border-radius: 10px;
   margin: 1rem;
   font-size: 1.5rem;
   padding: 1rem 0.5rem;

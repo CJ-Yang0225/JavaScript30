@@ -58,39 +58,59 @@
 
     <script>
       (function() {
-        // 監聽鍵盤事件
-        window.addEventListener("keydown", playHandler);
+        const keys = document.querySelectorAll(".key");
+
+        function debounce(func, wait = 20, immediate = true) {
+          let timeout;
+
+          return function() {
+            const context = this;
+            const args = arguments;
+
+            // 如果第一次進入 debounce(不存在 timeout)，直接讓 func 執行
+            if (immediate && !timeout) func.apply(context, args);
+
+            const later = function() {
+              timeout = null;
+              if (!immediate) func.apply(context, args);
+            };
+
+            // 若等待時間未完成又再次觸發事件，清除 timeout ，重新計算時間
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
 
         function playHandler(e) {
           // 控制音訊
           const audio = document.querySelector(
             `audio[data-key="${e.keyCode}"]`
-          ); // <-靜態, getElementByClassName為動態，會隨元件自動增加長度
-
-          if (audio) {
-            audio.currentTime = 0; // 確保聲音從頭播放
-            audio.play(); // 聲音播放
-          }
+          ); // <-靜態, getElementByClassName為動態，會隨元件增減而自動改變長度
 
           // 控制介面
           const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
 
-          if (key) {
-            key.classList.add("playing");
-          }
+          if (!audio) return;
 
-          document.querySelectorAll(".key").forEach(key => {
-            key.addEventListener("transitionend", removeTransition);
-          });
+          audio.currentTime = 0; // 確保聲音從頭播放
+          audio.play(); // 聲音播放
+          key.classList.add("playing");
 
-          function removeTransition(e) {
-            // console.log(e)
-            if (e.propertyName === "transform") {
-              console.log(e.currentTarget);
-              e.currentTarget.classList.remove("playing");
-            }
+          keys.forEach(key =>
+            key.addEventListener("transitionend", removeTransition)
+          );
+        }
+
+        function removeTransition(e) {
+          // console.log(e)
+          if (e.propertyName === "transform") {
+            console.log(e.currentTarget);
+            e.currentTarget.classList.remove("playing");
           }
         }
+
+        // 監聽鍵盤事件
+        window.addEventListener("keydown", debounce(playHandler));
       })();
     </script>
   </body>
