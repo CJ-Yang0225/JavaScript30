@@ -14,15 +14,15 @@ function getVideo() {
   navigator.mediaDevices
     .getUserMedia({
       video: true,
-      audio: false
+      audio: false,
     })
-    .then(mediaStream => {
+    .then((mediaStream) => {
       console.log(mediaStream);
       //   video.src = URL.createObjectURL(mediaStream); // deprecated
       video.srcObject = mediaStream;
       video.play();
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(`ERROR: ${error}`);
     });
 }
@@ -106,7 +106,7 @@ function rgbSplit(pixels) {
 function greenScreen(pixels) {
   const levels = {};
 
-  document.querySelectorAll(".rgb input").forEach(input => {
+  document.querySelectorAll(".rgb input").forEach((input) => {
     levels[input.name] = input.value;
   });
 
