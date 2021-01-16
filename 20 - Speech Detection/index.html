@@ -10,6 +10,40 @@
     <script>
       window.SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+      recognition.lang = "zh-TW";
+
+      let p = document.createElement("p");
+      const words = document.querySelector(".words");
+      words.appendChild(p);
+
+      recognition.addEventListener("result", (event) => {
+        // console.log(event);
+
+        const resultList = (result) => result[0];
+        const plainText = (result) => result.transcript;
+
+        const transcript = Array.from(event.results)
+          .map(resultList)
+          .map(plainText)
+          .join("");
+
+        const poopScript = transcript.replace(/poop|poo|shit|dump/gi, "💩");
+        p.textContent = poopScript;
+
+        const isSpeechEnd = event.results[0].isFinal;
+
+        if (isSpeechEnd) {
+          p = document.createElement("p");
+          words.appendChild(p);
+        }
+      });
+
+      recognition.addEventListener("end", recognition.start);
+
+      recognition.start();
     </script>
 
     <style>
@@ -43,7 +77,7 @@
         position: relative;
         line-height: 3rem;
       }
-      
+
       p {
         margin: 0 0 3rem;
       }
