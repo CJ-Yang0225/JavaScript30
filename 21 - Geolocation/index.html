@@ -107,9 +107,10 @@
         maximumAge: 0,
       };
 
+      // 成功處理
       const isSuccess = (position) => {
-        console.log(position);
         const coords = position.coords;
+        console.log(position);
         console.log("Your current position is: ");
         console.log(`Latitude: ${coords.latitude}`);
         console.log(`Longitude: ${coords.longitude}`);
@@ -124,10 +125,12 @@
         compassArrow.style.transform = `rotate(33deg)`;
       };
 
+      // 失敗處理
       const isError = (error) => {
         console.warn(`ERROR(${error.code}): ${error.message}`);
       };
 
+      // 檢查 API 是否可用
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           isSuccess,
