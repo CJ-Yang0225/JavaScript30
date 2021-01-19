@@ -52,24 +52,33 @@
       highlight.classList.add("highlight");
       document.body.appendChild(highlight);
 
-      const handleMouseEnter = (event) => {
-        const linkCoords = event.currentTarget.getBoundingClientRect();
+      let currentHighlight = null;
 
-        const coords = {
-          width: linkCoords.width,
-          height: linkCoords.height,
-          top: linkCoords.top + window.scrollY,
-          left: linkCoords.left + window.scrollX,
-        };
+      const handleHighlight = (event) => {
+        currentHighlight = event.currentTarget;
+        handleResize();
+      };
 
-        highlight.style.width = `${coords.width}px`;
-        highlight.style.height = `${coords.height}px`;
-        highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+      const handleResize = () => {
+        const {
+          width,
+          height,
+          top,
+          left,
+        } = currentHighlight.getBoundingClientRect();
+
+        highlight.style.width = `${width}px`;
+        highlight.style.height = `${height}px`;
+        highlight.style.transform = `translate(${left + window.scrollX}px, ${
+          top + window.scrollY
+        }px)`;
       };
 
       triggers.forEach((link) =>
-        link.addEventListener("mouseenter", handleMouseEnter)
+        link.addEventListener("mouseenter", handleHighlight)
       );
+
+      window.addEventListener("resize", handleResize);
     </script>
   </body>
 </html>
