@@ -275,7 +275,6 @@
       let offsetTopOfNav = nav.offsetTop;
 
       const handleScroll = () => {
-        console.log(window.scrollY, offsetTopOfNav);
         if (window.scrollY >= offsetTopOfNav) {
           document.body.classList.add("fixed-nav");
           // position: fixed 不佔據 HTML 的空間，所以需要補上
@@ -286,14 +285,13 @@
         }
       };
 
-      // 視窗變動導致 header 高度變動時，重新獲取 nav 位置，防止效果出錯
+      // 視窗變動導致 header 高度變動時，重新獲取 nav 位置，防止效果出現差異
       const handleResize = () => {
         // fixed 狀態的 nav.offsetTop 為 0，要先取得原先位置
-        if (document.body.classList.contains("fixed-nav")) {
-          document.body.classList.remove("fixed-nav");
-          document.body.style.paddingTop = 0;
-        }
+        document.body.classList.remove("fixed-nav");
+        document.body.style.paddingTop = 0;
         offsetTopOfNav = nav.offsetTop;
+        handleScroll();
         console.log("resize:", offsetTopOfNav);
       };
 
