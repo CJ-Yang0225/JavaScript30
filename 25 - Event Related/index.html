@@ -35,16 +35,75 @@
 
   <body class="bod">
     <div class="one">
+      1
       <div class="two">
-        <div class="three"></div>
+        2
+        <div class="three">3</div>
       </div>
     </div>
 
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <ol>
+      <li>
+        <a href="#">Link1</a>
+      </li>
+      <li>
+        <a href="#">Link2</a>
+      </li>
+      <li>
+        <a href="#">Link3</a>
+      </li>
+    </ol>
+
     <script>
-      let divs = document.querySelectorAll("div");
-      let one = document.querySelector(".one");
-      let two = document.querySelector(".two");
-      let three = document.querySelector(".three");
+      const divs = document.querySelectorAll("div");
+      const one = document.querySelector(".one");
+      const two = document.querySelector(".two");
+      const three = document.querySelector(".three");
+      const links = document.querySelectorAll("a");
+      const orderedList = document.querySelector("ol");
+
+      function logText(e) {
+        console.log(this.classList.value);
+        // e.stopPropagation();
+      }
+
+      function logText1(e) {
+        console.log(this.classList.value);
+        console.log(e.composedPath());
+        // e.stopPropagation();
+      }
+
+      function logText2(e) {
+        console.log(this.classList.value);
+        e.stopPropagation(); // 中斷事件傳遞
+      }
+
+      function logText3(e) {
+        console.log(this.classList.value);
+        // e.stopPropagation();
+      }
+
       // divs.forEach((div) =>
       //   div.addEventListener("click", logText, {
       //     // 只監聽一次的事件
@@ -64,25 +123,31 @@
         capture: true,
       });
 
-      function logText(e) {
-        console.log(this.classList.value);
-        // e.stopPropagation();
-      }
+      const handleLink = (e) => {
+        e.preventDefault(); // 阻擋原本 DOM 的功能 (防止 a 標籤的錨點連結)
+        console.log(`Binding: ${e.target.textContent} Clicked!`);
+      };
 
-      function logText1(e) {
-        console.log(this.classList.value);
-        // e.stopPropagation();
-      }
+      // Event Delegation 事件代理(委派): 在可控範圍內，動態處理特定對象......
+      const handleOrderedList = (e) => {
+        // nodeName 標籤為大寫
+        // target 為事件觸發的最底層
+        // currentTarget 為事件監聽的綁定對象
+        if (e.target.nodeName === "A") {
+          e.preventDefault();
+          console.log(`Delegate: ${e.target.textContent} Clicked!`);
+        }
+      };
 
-      function logText2(e) {
-        console.log(this.classList.value);
-        e.stopPropagation();
-      }
+      links.forEach((link) =>
+        link.addEventListener("click", handleLink, {
+          capture: false,
+          // true: 禁止"阻擋原本 DOM 的功能"的功能
+          passive: false,
+        })
+      );
 
-      function logText3(e) {
-        console.log(this.classList.value);
-        // e.stopPropagation();
-      }
+      orderedList.addEventListener("click", handleOrderedList);
     </script>
   </body>
 </html>
