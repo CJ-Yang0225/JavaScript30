@@ -7,31 +7,31 @@ function timer(seconds) {
   // clear any existing timers
   clearInterval(countdown);
 
-  const now = Date.now();
+  const now = Date.now(); // Static Method (不支援IE8)
   const then = now + seconds * 1000;
   displayTimeLeft(seconds);
   displayEndTime(then);
 
   countdown = setInterval(() => {
+    // 計算剩餘的時間
     const secondsLeft = Math.round((then - Date.now()) / 1000);
-    // check if we should stop it!
+
+    // 停止倒數
     if (secondsLeft < 0) {
       clearInterval(countdown);
       return;
     }
-    // display it
+    // 顯示剩餘的時間
     displayTimeLeft(secondsLeft);
-  }, 1000);
+  }, 16); // 60FPS (1000/60)
 }
 
 function displayTimeLeft(seconds) {
   const minutes = Math.floor(seconds / 60);
-  const remainderSeconds = seconds % 60;
-  const display = `${minutes}:${
-    remainderSeconds < 10 ? "0" : ""
-  }${remainderSeconds}`;
+  const remainderSeconds = String(seconds % 60).padStart(2, "0"); // 小於兩位補0 (ES8)
+  const display = `${minutes}:${remainderSeconds}`;
   document.title = display;
-  timerDisplay.textContent = display;
+  timerDisplay.textContent = display; // 比 innerHTML 安全
 }
 
 function displayEndTime(timestamp) {
