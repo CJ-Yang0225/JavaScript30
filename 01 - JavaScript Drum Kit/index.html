@@ -57,25 +57,25 @@
     <audio data-key="76" src="sounds/tink.wav"></audio>
 
     <script>
-      (function() {
+      (function () {
         const keys = document.querySelectorAll(".key");
 
-        function debounce(func, wait = 20, immediate = true) {
+        function debounce(func, wait = 30, immediate = true) {
           let timeout;
 
-          return function() {
+          return function () {
             const context = this;
             const args = arguments;
 
             // 如果第一次進入 debounce(不存在 timeout)，直接讓 func 執行
             if (immediate && !timeout) func.apply(context, args);
 
-            const later = function() {
+            const later = function () {
               timeout = null;
               if (!immediate) func.apply(context, args);
             };
 
-            // 若等待時間未完成又再次觸發事件，清除 timeout ，重新計算時間
+            // 若等待時間未完成又再次觸發事件，清除 timeout，重新計算時間
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
           };
@@ -87,30 +87,40 @@
             `audio[data-key="${e.keyCode}"]`
           ); // <-靜態, getElementByClassName為動態，會隨元件增減而自動改變長度
 
+          if (!audio) return;
+
           // 控制介面
           const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
 
-          if (!audio) return;
+          // 短時間 add 會導致 transform 被中斷 (transitioncancel)，所以 transitionend 無作用
+          // key.classList.add("playing");
+
+          // 解法一
+          key.classList.toggle("playing");
+
+          // 解法二
+          // if (key.classList.contains("playing")) {
+          //   key.classList.remove("playing");
+          // } else {
+          // key.classList.add("playing");
+          // }
 
           audio.currentTime = 0; // 確保聲音從頭播放
           audio.play(); // 聲音播放
-          key.classList.add("playing");
-
-          keys.forEach(key =>
-            key.addEventListener("transitionend", removeTransition)
-          );
         }
 
         function removeTransition(e) {
-          // console.log(e)
+          console.log("PropertyName", e.propertyName);
           if (e.propertyName === "transform") {
-            console.log(e.currentTarget);
             e.currentTarget.classList.remove("playing");
           }
         }
 
         // 監聽鍵盤事件
         window.addEventListener("keydown", debounce(playHandler));
+        keys.forEach((key) =>
+          key.addEventListener("transitionend", removeTransition)
+        );
       })();
     </script>
   </body>
