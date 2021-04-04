@@ -109,16 +109,23 @@
 
       // 成功處理
       const isSuccess = (position) => {
-        const coords = position.coords;
+        const {
+          latitude,
+          longitude,
+          accuracy,
+          speed,
+          heading,
+        } = position.coords;
+
         console.log(position);
         console.log("Your current position is: ");
-        console.log(`Latitude: ${coords.latitude}`);
-        console.log(`Longitude: ${coords.longitude}`);
-        console.log(`More or less ${coords.accuracy} meters`);
+        console.log(`Latitude: ${latitude}`);
+        console.log(`Longitude: ${longitude}`);
+        console.log(`More or less ${accuracy} meters`);
 
         // 根據手機 Sensor 改變 UI 畫面
-        speedometer.innerHTML = coords.speed;
-        compassArrow.style.transform = `rotate(${coords.heading}deg)`;
+        speedometer.innerHTML = speed;
+        compassArrow.style.transform = `rotate(${heading}deg)`;
 
         // PC 測試用
         speedometer.innerHTML = 18;
@@ -138,7 +145,7 @@
           geolocationOptions
         );
       } else {
-        console.log("Your browser does not support the Geolocation API");
+        console.error("Your browser does not support the Geolocation API");
       }
     </script>
   </body>
