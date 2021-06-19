@@ -222,15 +222,25 @@
     </div>
 
     <script>
+      const sliderImages = document.querySelectorAll(".slide-in");
+      const testInput = document.querySelector("#test");
+
       /* 停止連續觸發相同事件，直到使用者停止觸發 (可能導致部分"事件"的延遲，影響使用者體驗)*/
       // 效果EX: https://chrome.google.com/webstore/category/extensions
       function debounce(func, wait = 20, immediate = true) {
         var timeout;
-        return function() {
-          var context = this, // 對 Input 做監聽，所以 this -> Input
-            args = arguments; // 類陣列 (Array-like)，可取得所有參數
-          console.log(this);
-          var later = function() {
+        console.log("直接呼叫 debounce:", this); // 直接呼叫 debounce，相當於 debounce.call(window)，所以 this -> Window
+        // console.log(arguments);
+        // 一般 Function 是依據如何被呼叫來定義自己的 this 變數。此 function 交由監聽的事件來觸發（閉包概念）
+        return function (param1, param2, event) {
+          console.log(
+            "this === event.currentTarget:",
+            this === event.currentTarget
+          );
+          var context = this, // 透過監聽器呼叫，相當於 testDebounce.call(event.currentTarget)，所以 this -> Input
+            args = arguments; // 類陣列 (Array-like)，可取得所有參數（含被呼叫時帶入的參數）
+          // console.log(args, "綁定的 this:", this);
+          var later = function () {
             timeout = null;
             if (!immediate) func.apply(context, args);
           };
@@ -247,16 +257,18 @@
       function throttle(func, wait = 20, immediate = true) {
         let last;
         let timeout;
-        // 以此^ function 為基準產生一個作用域： this -> Window (若事件在window下監聽)
+        console.log("直接呼叫 throttle:", this); // 直接呼叫 throttle，相當於 throttle.call(window)，所以 this -> Window
+
+        // Arrow Function 沒有自己的 this，所以指向"定義時的作用域"（throttle）之 this。此案例剛好與監聽對象相同 this -> Window
         return () => {
           // const context = this;
           // console.log(this);
           const args = arguments;
           const now = +new Date(); // 將該元素轉換 Number，如果轉換失敗得到 NaN
 
-          if (last && now < last + timeout) {
+          if (last && now < last + wait) {
             clearTimeout(timeout);
-            timeout = setTimeout(function() {
+            timeout = setTimeout(function () {
               last = now;
               func.apply(this, args);
             }, wait);
@@ -267,13 +279,12 @@
         };
       }
 
-      const sliderImages = document.querySelectorAll(".slide-in");
-      const testInput = document.querySelector("#test");
       function scrollHandler() {
+        console.log("觸發 Throttle 效果！");
         const windowTop = window.scrollY; // 網頁上方基準線
         const windowBottom = windowTop + innerHeight; // 網頁下方基準線
 
-        sliderImages.forEach(sliderImage => {
+        sliderImages.forEach((sliderImage) => {
           // half way through the image
           // const slideInAt = windowBottom - sliderImage.height / 2;
           const slideInAt = sliderImage.offsetTop + sliderImage.height / 2;
@@ -282,7 +293,7 @@
           const isHalfShown = slideInAt < windowBottom;
           const isNotScrolledPast = windowTop < imageBottom;
 
-          // 當半張圖片出現(使用者能觀察較多的動畫過程)，而且沒有離開畫面時，啟用css效果
+          // 當半張圖片出現(使用者能觀察較多的動畫過程)，而且沒有離開畫面時，啟用 css 效果
           if (isHalfShown && isNotScrolledPast) {
             sliderImage.classList.add("active");
           } else {
@@ -292,16 +303,13 @@
       }
 
       function testDebounce() {
-        console.log(`測試 Debounce 的 this 在： ${this}`);
+        console.log("觸發 Debounce 效果！");
       }
 
-      /* 簡單判斷 this 的指向：
-       * 第一步 - function 是否立即執行? 如果是，直接跳到第三步
-       * 第二步 - 若不是，可能在某個物件上，或者轉交給了誰
-       * 第三步 - function 被誰調用，this 就指向它
-       *
-       * 參考：https://www.itread01.com/content/1549089366.html */
-      testInput.addEventListener("input", debounce(testDebounce, 500));
+      testInput.addEventListener(
+        "input",
+        debounce(testDebounce, 1500, false).bind(testInput, "abc", 456) // 測試 arguments 和顯示綁定
+      );
       window.addEventListener("scroll", throttle(scrollHandler, 100));
     </script>
 
