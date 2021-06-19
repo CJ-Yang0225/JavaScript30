@@ -57,21 +57,27 @@
     <audio data-key="76" src="sounds/tink.wav"></audio>
 
     <script>
+      // IIFE（Immediately Invoked Function Expression）－利用 function 產生一作用域（Scope），防止變數汙染至 Global
       (function () {
         const keys = document.querySelectorAll(".key");
 
         function debounce(func, wait = 30, immediate = true) {
           let timeout;
+          console.log("直接呼叫 debounce:", this); // 直接呼叫 debounce，相當於 debounce.call(window)，所以 this -> Window
 
+          // 閉包（Closure），會將使用到的變數保持在記憶體中
           return function () {
-            const context = this;
-            const args = arguments;
+            const context = this; // 由 EventListener 呼叫此 Function，內部相當於 func.call(event.currentTarget)，所以 this -> Window
+            const args = arguments; // 類陣列 (Array-like)，可取得所有參數（含被呼叫時帶入的參數），因透過事件觸發會自帶一個 Event
 
-            // 如果第一次進入 debounce(不存在 timeout)，直接讓 func 執行
+            // console.log(context) //
+
+            // 如果 immediate 設為 true 且 timeout 不存在，直接讓 func 執行
             if (immediate && !timeout) func.apply(context, args);
 
             const later = function () {
-              timeout = null;
+              timeout = null; // 手動釋放，讓記憶體回收機制認為該變數已不需要
+              // 若 immediate 為 false ，代表延遲後才會執行 func；反之因為執行過，所以不做
               if (!immediate) func.apply(context, args);
             };
 
@@ -92,8 +98,8 @@
           // 控制介面
           const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
 
-          // 短時間 add 會導致 transform 被中斷 (transitioncancel)，所以 transitionend 無作用
-          // key.classList.add("playing");
+          // Bug: 短時間 add 會導致 transform 被中斷 (transitioncancel)，所以 transitionend 無作用
+          // key.classList.add("playing"); // <- 導致 Bug
 
           // 解法一
           key.classList.toggle("playing");
@@ -116,7 +122,7 @@
         }
 
         // 監聽鍵盤事件
-        window.addEventListener("keydown", debounce(playHandler));
+        window.addEventListener("keydown", debounce(playHandler, 50));
         keys.forEach((key) =>
           key.addEventListener("transitionend", removeTransition)
         );
