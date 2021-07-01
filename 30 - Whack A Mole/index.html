@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Whack A Mole!</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="App">
+      <h1>Whack-a-mole! <span class="score">0</span></h1>
+      <div class="game">
+        <div class="hole">
+          <div class="mole"></div>
+        </div>
+        <div class="hole">
+          <div class="mole"></div>
+        </div>
+        <div class="hole">
+          <div class="mole"></div>
+        </div>
+        <div class="hole">
+          <div class="mole"></div>
+        </div>
+        <div class="hole">
+          <div class="mole"></div>
+        </div>
+        <div class="hole">
+          <div class="mole"></div>
+        </div>
+      </div>
+      <button>Start!</button>
+    </div>
+
+    <script>
+      const container = document.querySelector(".game");
+      const scoreBoard = document.querySelector(".score");
+      const moles = Array.from(document.querySelectorAll(".mole"));
+      const stateOfMoles = moles.reduce((state, current, index) => {
+        state[index] = false;
+        return state;
+      }, {});
+      let score = 0;
+      let isGameOver = true;
+
+      function handleWhack() {
+        setScore(score + 1);
+        proxyOfMoles[moles.indexOf(this)] = false;
+      }
+
+      const proxyOfMoles = new Proxy(stateOfMoles, {
+        get(target, key) {
+          return target[key];
+        },
+        set(target, key, value) {
+          target[key] = value;
+          moles[key].removeEventListener("click", handleWhack);
+
+          if (value) {
+            moles[key].addEventListener("click", handleWhack);
+            moles[key].classList.add("up");
+          } else {
+            moles[key].classList.remove("up");
+          }
+        },
+      });
+      const startButton = document.querySelector("button");
+
+      const getRandomTime = (max, min) =>
+        Math.round(Math.random() * (max - min) + min);
+
+      const setScore = (newScore) => {
+        score = newScore;
+        scoreBoard.textContent = score;
+      };
+
+      const setIsGameOver = (state) => (isGameOver = state);
+
+      const setMole = () => {
+        const time = getRandomTime(1000, 500);
+        const mole = Math.floor(Math.random() * moles.length);
+        if (proxyOfMoles[mole]) return setMole();
+        proxyOfMoles[mole] = true;
+        setTimeout(() => {
+          proxyOfMoles[mole] = false;
+          if (!isGameOver) setMole();
+        }, time);
+      };
+
+      const startGame = () => {
+        startButton.disabled = true;
+        setScore(0);
+        setIsGameOver(false);
+        setMole();
+        setTimeout(() => {
+          setIsGameOver(true);
+          alert(`遊戲結束\n\n總分為: ${score}`);
+          startButton.disabled = false;
+        }, 10000);
+      };
+
+      startButton.addEventListener("click", startGame);
+    </script>
+  </body>
+</html>
